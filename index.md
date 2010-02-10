@@ -80,8 +80,8 @@ The user interface normally means HTML. Dojo Core is specifically constructed to
 * [dojo.parser](http://docs.dojocampus.org/dojo/parser) for parsing HTML for declarative UI widgets (mostly used with Dijit widgets).
 
 #### Modifying HTML/DOM
-dojo.attr](http://docs.dojocampus.org/dojo/attr), dojo.hasAttr](http://docs.dojocampus.org/dojo/hasAttr), dojo.removeAttr](http://docs.dojocampus.org/dojo/removeAttr), dojo.getNodeProp](http://docs.dojocampus.org/dojo/getNodeProp) for dealing with an element's attributes and properties. There are some edge cases when using dojo.attr, try using dojo.getNodeProp when just wanting to read a property on an element.
-dojo.addClass](http://docs.dojocampus.org/dojo/addClass), dojo.removeClass](http://docs.dojocampus.org/dojo/removeClass), dojo.hasClass](http://docs.dojocampus.org/dojo/hasClass), dojo.toggleClass](http://docs.dojocampus.org/dojo/toggleClass) for dealing with element classes.
+* [dojo.attr](http://docs.dojocampus.org/dojo/attr), [dojo.hasAttr](http://docs.dojocampus.org/dojo/hasAttr), [dojo.removeAttr](http://docs.dojocampus.org/dojo/removeAttr), [dojo.getNodeProp](http://docs.dojocampus.org/dojo/getNodeProp) for dealing with an element's attributes and properties. There are some edge cases when using dojo.attr, try using dojo.getNodeProp when just wanting to read a property on an element.
+* [dojo.addClass](http://docs.dojocampus.org/dojo/addClass), [dojo.removeClass](http://docs.dojocampus.org/dojo/removeClass), [dojo.hasClass](http://docs.dojocampus.org/dojo/hasClass), [dojo.toggleClass](http://docs.dojocampus.org/dojo/toggleClass) for dealing with element classes.
 * [dojo.style](http://docs.dojocampus.org/dojo/style) for getting/setting style properties on an element. Favor using dojo.addClass/dojo.removeClass where possible.
 * [dojo.position](http://docs.dojocampus.org/dojo/position) for getting the border-box x/y coordinates and size of a DOM node.
 * [dojo.marginBox](http://docs.dojocampus.org/dojo/marginBox) for getting/setting the margin-box of node
@@ -94,8 +94,9 @@ dojo.addClass](http://docs.dojocampus.org/dojo/addClass), dojo.removeClass](http
 Outside of Dojo Core, Dijit is normally used to add in rich UI widgets into the page. Dijit widgets all use dojo.declare() to define themselves, as some sort of derived object from dojo._Widget. dojo.parser is used to find declarative widgets in HTML.
 
 A simplified breakdown of Dijit widgets:
+
 * A base "class", [dijit._Widget](http://docs.dojocampus.org/dijit/_Widget), that defines a widget lifecycle, utility methods for managing proper creation/destruction widget resources.
-* A dojo.mixin for templated widgets, [dijit._Templated[(http://docs.dojocampus.org/dijit/_Templated), that use HTML templates.
+* A dojo.mixin for templated widgets, [dijit._Templated](http://docs.dojocampus.org/dijit/_Templated), that use HTML templates.
     * HTML templates can be fetched via dojo.cache
     * HTML templates can be templatize, using dojo.replace to replace token values.
 * A set of constructor functions (like a "class") that are defined via dojo.declare for each widget. Special care is given to i18n and a11y.
