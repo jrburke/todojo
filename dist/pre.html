@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>${title}</title>
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/dojo/1.4/dojox/highlight/resources/highlight.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.4/dojo/dojo.xd.js.uncompressed.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.js"></script>
+    <script type="text/javascript">
+        dojo.require("dojox.highlight");
+        dojo.require("dojox.highlight.languages.javascript");
+        dojo.require("dojox.highlight.languages.html");
+        dojo.ready(function() {
+            dojo.query("pre > code").addClass("javascript").forEach(dojox.highlight.init);
+        });
+    </script>
+</head>
+<body>

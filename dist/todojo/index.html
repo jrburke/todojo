@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>todojo</title>
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/dojo/1.4/dojox/highlight/resources/highlight.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.4/dojo/dojo.xd.js.uncompressed.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.js"></script>
+    <script type="text/javascript">
+        dojo.require("dojox.highlight");
+        dojo.require("dojox.highlight.languages.javascript");
+        dojo.require("dojox.highlight.languages.html");
+        dojo.ready(function() {
+            dojo.query("pre > code").addClass("javascript").forEach(dojox.highlight.init);
+        });
+    </script>
+</head>
+<body>
+<h1>todojo</h1>
+
+<p>This is a description of Dojo's general approach to day-to-day coding, and a comparison with other toolkits.</p>
+
+<ul>
+<li><a href="#general">General Approach</a></li>
+<li><a href="#mvc">MVC</a>
+<ul>
+<li><a href="#view">Display the user interface (View)</a></li>
+<li><a href="#model">Get the data used by the interface (Model)</a></li>
+<li><a href="#controller">Change the data and interface. (Controller)</a></li>
+</ul></li>
+<li><a href="jquery/">From jQuery</a></li>
+</ul>
+
+<h2><a name="general">General Approach</a></h2>
+
+<p>Dojo's general approach:</p>
+
+<ul>
+<li>JavaScript is powerful and enjoyable language. Enjoy it, do not mask it behind something else. In addition, JavaScript runs in other places, not just the browser. Dojo can run in other JS environments.</li>
+<li>However, browser and DOM APIs can be difficult to work with across browsers. Smooth over browser differences.</li>
+<li>Do not extend global objects, specifically avoiding adding things to native prototypes. The goal is to operate well with other toolkits in the page, or even another version of Dojo.</li>
+<li>Build discrete modules. The toolkit follows this approach, and more importantly makes it easy for you to use the same approach for your code.</li>
+<li>Provide a basic level of functionality in one file, dojo.js, called Dojo Base. Include other useful modules that can be loaded via the module system (Dojo Core, the modules in the dojo directory).</li>
+<li>Provide lots of CLA-backed modules, including a widget system (dijit), and many utilities, some that are experimental (dojox), all building on Dojo Core.</li>
+<li>Built in performance: Dojo Base is fast at running tasks, and the integrated build system allows you to optimize your code for best performance.</li>
+</ul>
+
+<p>This approach can be contrasted with some other toolkits. All of these toolkits aim to smooth over browser differences.</p>
+
+<ul>
+<li>Prototype and MooTools prefer to extend native prototypes. This can be difficult to do in ways that do not conflict with other libraries, or multiple versions of the same library. However, this approach can feel more familiar to developers from some languages, like Ruby.</li>
+<li>jQuery aims to not modify globals, and is primarily focused on the DOM and Ajax calls. Similar functionality is available in Dojo Base. jQuery has plugins, but their goal is just to add a utility method to the jQuery object, a fairly narrow view of a module.</li>
+<li>YUI is most similar to Dojo: it as a module system, but seems to focus more on applications developers consuming already-built YUI components vs. encouraging use of the YUI plumbing to make application level components. But it is possible to build your own application components in YUI.</li>
+</ul>
+
+<p>The distinguishing factor for Dojo: it wants you to make modular code that is fast and uses the same tools as the built-in Dojo modules. Turtles all the way down.</p>
+
+<p>The principle actors of this modular system:</p>
+
+<ul>
+<li><a href="http://docs.dojocampus.org/dojo/require">dojo.require</a></li>
+<li><a href="http://docs.dojocampus.org/dojo/provide">dojo.provide</a></li>
+<li><a href="http://docs.dojocampus.org/dojo/declare">dojo.declare</a></li>
+<li><a href="http://docs.dojocampus.org/dojo/mixin">dojo.mixin</a></li>
+<li>[dojo.extend] (http://docs.dojocampus.org/dojo/extend)</li>
+<li>[dojo.hitch] (http://docs.dojocampus.org/dojo/hitch)</li>
+</ul>
+
+<p>dojo.require loads modules, dojo.provide tells the loader a module has loaded, and creates an empty JavaScript object that matches the name used in the dojo.provide call.</p>
+
+<p>dojo.declare is a system for defining objects that work a little bit like traditional classes, however, they still retain some of JavaScript's prototype behaviors. dojo.declare is used extensively in Dijit widgets. dojo.declare is a great way to encapsulate functionality into a component that can be instantiated many times in an application.</p>
+
+<p>dojo.mixin and dojo.extend are ways to combine extra functionality into existing objects. dojo.mixin combines the extra functionality directly on the target object, where dojo.extend works on the target object's prototype.</p>
+
+<p>dojo.hitch is used to set the right value of "this" to be that of your module or object instance for APIs that accept function callbacks.</p>
+
+<h2><a name="mvc">MVC</a></h2>
+
+<p>What parts make up a dynamic web site? It generally breaks down into a (Model, View, Controller)[http://en.wikipedia.org/wiki/Model-View-Controller] (MVC) approach.</p>
+
+<ul>
+<li><a href="#view">Display the user interface (View)</a></li>
+<li><a href="#model">Get the data used by the interface (Model)</a></li>
+<li><a href="#controller">Change the data and interface. (Controller)</a></li>
+</ul>
+
+<p>How you approach each part depends on the type of application you are building. Dojo allows you to start small, just progressively enhancing a simple web page, to something large like a single-page web application.</p>
+
+<p>The following sections describe the Dojo features that correspond to the different parts of MVC.</p>
+
+<h3><a name="view">Display the user interface (View)</a></h3>
+
+<p>The user interface normally means HTML. Dojo Core is specifically constructed to give you utilities to manipulate HTML.</p>
+
+<h4>Building HTML</h4>
+
+<ul>
+<li><a href="http://docs.dojocampus.org/dojo/cache">dojo.cache</a> for loading HTML.</li>
+<li><a href="http://docs.dojocampus.org/dojo/create">dojo.create</a> for creating a new HTML element.</li>
+<li><a href="http://docs.dojocampus.org/dojo/replace">dojo.replace</a> for using templatized HTML.</li>
+<li><a href="http://docs.dojocampus.org/dojo/place">dojo.place</a> for creating and placing HTML relative to some other element.</li>
+<li><a href="http://docs.dojocampus.org/quickstart/internationalization/index">i18n modules</a> for building localized UI. Useful when used with dojo.replace.</li>
+</ul>
+
+<h4>Working with the DOM</h4>
+
+<ul>
+<li><a href="http://docs.dojocampus.org/dojo/query">dojo.query</a> to find DOM nodes in a page.</li>
+<li><a href="http://docs.dojocampus.org/dojo/NodeList">dojo.NodeList</a> to allow chained operations for working with nodes found via dojo.query.</li>
+<li><a href="http://docs.dojocampus.org/dojo/NodeList-traverse">dojo.NodeList-traverse</a> additional methods to NodeList that help traverse the DOM.</li>
+<li><a href="http://docs.dojocampus.org/dojo/NodeList-manipulate">dojo.NodeList-manipulate</a> additional methods to NodeList to help manipulate the DOM.</li>
+<li><a href="http://docs.dojocampus.org/dojo/anim">dojo.anim</a>, <a href="http://docs.dojocampus.org/dojo/fadeOut">dojo.fadeOut</a>, <a href="http://docs.dojocampus.org/dojo/fadeIn">dojo.fadeIn</a> for doing animations.</li>
+<li><a href="http://docs.dojocampus.org/dojo/dnd">dojo.dnd</a> for drag and drop support.</li>
+<li><a href="http://docs.dojocampus.org/dojo/parser">dojo.parser</a> for parsing HTML for declarative UI widgets (mostly used with Dijit widgets).</li>
+</ul>
+
+<h4>Modifying HTML/DOM</h4>
+
+<p>dojo.attr](http://docs.dojocampus.org/dojo/attr), dojo.hasAttr](http://docs.dojocampus.org/dojo/hasAttr), dojo.removeAttr](http://docs.dojocampus.org/dojo/removeAttr), dojo.getNodeProp](http://docs.dojocampus.org/dojo/getNodeProp) for dealing with an element's attributes and properties. There are some edge cases when using dojo.attr, try using dojo.getNodeProp when just wanting to read a property on an element.
+dojo.addClass](http://docs.dojocampus.org/dojo/addClass), dojo.removeClass](http://docs.dojocampus.org/dojo/removeClass), dojo.hasClass](http://docs.dojocampus.org/dojo/hasClass), dojo.toggleClass](http://docs.dojocampus.org/dojo/toggleClass) for dealing with element classes.
+* <a href="http://docs.dojocampus.org/dojo/style">dojo.style</a> for getting/setting style properties on an element. Favor using dojo.addClass/dojo.removeClass where possible.
+* <a href="http://docs.dojocampus.org/dojo/position">dojo.position</a> for getting the border-box x/y coordinates and size of a DOM node.
+* <a href="http://docs.dojocampus.org/dojo/marginBox">dojo.marginBox</a> for getting/setting the margin-box of node
+* <a href="http://docs.dojocampus.org/dojo/contentBox">dojo.contentBox</a> for getting/setting the content-box of node
+* <a href="http://docs.dojocampus.org/dojo/destroy">dojo.destroy</a> for destroying elements
+* <a href="http://docs.dojocampus.org/dojo/empty">dojo.empty</a> for emptying an element of children</p>
+
+<h4>Relation to Dijit</h4>
+
+<p>Outside of Dojo Core, Dijit is normally used to add in rich UI widgets into the page. Dijit widgets all use dojo.declare() to define themselves, as some sort of derived object from dojo._Widget. dojo.parser is used to find declarative widgets in HTML.</p>
+
+<p>A simplified breakdown of Dijit widgets:
+* A base "class", <a href="http://docs.dojocampus.org/dijit/_Widget">dijit.<em>Widget</a>, that defines a widget lifecycle, utility methods for managing proper creation/destruction widget resources.
+* A dojo.mixin for templated widgets, [dijit.</em>Templated[(http://docs.dojocampus.org/dijit/_Templated), that use HTML templates.
+    * HTML templates can be fetched via dojo.cache
+    * HTML templates can be templatize, using dojo.replace to replace token values.
+* A set of constructor functions (like a "class") that are defined via dojo.declare for each widget. Special care is given to i18n and a11y.</p>
+
+<p>There is more to Dijit widgets, but the above are the basics, and demonstrate what you could use to build your own widget system.</p>
+
+<h3><a name="model">Get the data used by the interface (Model)</a></h3>
+
+<ul>
+<li><a href="http://docs.dojocampus.org/dojo/xhr">dojo.xhr</a> for doing XMLHttpRequests.</li>
+<li><a href="http://docs.dojocampus.org/dojo/io/script">dojo.io.script</a> for doing JSONP calls, attaching scripts.</li>
+<li><a href="http://docs.dojocampus.org/dojo/io/iframe">dojo.io.iframe</a> for sending requests via iframes, useful if uploading files.</li>
+<li><a href="http://docs.dojocampus.org/dojo/fromJson">dojo.fromJson</a>, <a href="http://docs.dojocampus.org/dojo/toJson">dojo.toJson</a> for working with JSON.</li>
+<li><a href="http://docs.dojocampus.org/dojo/objectToQuery">dojo.objectToQuery</a></li>
+<li><a href="http://docs.dojocampus.org/dojo/queryToObject">dojo.queryToObject</a></li>
+<li><a href="http://docs.dojocampus.org/dojo/Deferred">dojo.Deferred</a>, <a href="http://docs.dojocampus.org/dojo/DeferredList">dojo.DeferredList</a> are used by the IO calls to set up work to happen later when an IO call completes or has an error. dojo.DeferredList is useful if you need to wait for a series of IO calls that all return dojo.Deferreds.</li>
+<li><a href="http://docs.dojocampus.org/dojo/rpc">dojo.rpc</a> is an approach to communicating via Remote Procedure Calls (RPC) with backend servers.</li>
+<li><a href="http://docs.dojocampus.org/dojo/data">dojo.data</a> is a standard interface to representing data sources. A particular data store implements one or many of the different dojo.data sub-interfaces. Dijit leverages dojo.data to tie data generically to the dijit widgets.</li>
+</ul>
+
+<h3><a name="controller">Change the data and interface. (Controller)</a></h3>
+
+<ul>
+<li><a href="http://docs.dojocampus.org/dojo/ready">dojo.ready</a> is a way to register work to be done when the page loads, a common way to trigger your controller work to start.</li>
+<li><a href="http://docs.dojocampus.org/dojo/connect">dojo.connect</a> to bind to DOM events and to other JavaScript methods. The basic wiring call for hooking up routing of behavior.</li>
+<li><a href="http://docs.dojocampus.org/dojo/publish">dojo.publish</a>/<a href="http://docs.dojocampus.org/dojo/subscribe">dojo.subscribe</a> allows decoupled sending and receiving of events. dojo.publish is a great way to communicate state without knowing the specific end points, and dojo.subscribe can be used to register for specific state changes without having to know how they are triggered.</li>
+<li><a href="http://docs.dojocampus.org/dojo/hash">dojo.hash</a> provides methods for monitoring and updating the hash in the browser URL, useful to communicate the basic page state. Uses dojo.subscribe to communicate hash changes.</li>
+<li><a href="http://docs.dojocampus.org/dojo/cookie">dojo.cookie</a> gets/sets cookies for saving state.</li>
+</ul>
+
+<h2>Tying it Together</h2>
+
+<p>Dojo uses modular code to build up an MVC system for your web app. Here are some examples on how you can use Dojo to structure your application.</p>
+
+<h3>Simple enhanced web site.</h3>
+
+<p>Index.html loads dojo, and uses djConfig's require property to automatically load call for page's behavior:</p>
+
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Sample Dojo page&lt;/title&gt;
+    &lt;script djConfig="baseUrl: './base/', require: ['app']"
+            src="http://ajax.googleapis.com/ajax/libs/dojo/1.4/dojo/dojo.xd.js.uncompressed.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Simple Dojo-enhanced page&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>app.js requires any dependencies, then binds behavior to the DOM:</p>
+
+<pre><code>dojo.provide("app");
+
+dojo.require("dojo.cache");
+
+dojo.ready(function(){
+    //Update the View with some HTML
+    dojo.body().innerHTML = dojo.cache("app", "hello.html");
+
+    //Use dojo.query to attach behaviors to the HTML
+    //(This will not fire in this example, it is just used for illustration)
+    dojo.query("a").onclick(function(evt) {
+        //
+        dojo.xhr({
+            url: "some/api",
+            load: function(data) {
+                //Do something with data (the model) here.
+            }
+        })
+
+    });
+});
+</code></pre>
+
+<p><a href="sample/">Here are the files for this sample</a>.</p>
+
+<h3>Rich web application.</h3>
+
+<p><a href="http://mozillalabs.com/raindrop/">Mozilla Raindrop</a> is an example of a rich web application with many modules, many of them widgets based on dijit.<em>Widget and dijit.</em>Templated.</p>
+
+<p>It differs slightly from a standard Dojo install: it uses <a href="http://github.com/jrburke/requirejs">RequireJS</a> to load modules. So you will see calls to require() and require.def() instead of dojo.require() and dojo.provide() but they are conceptually similar.</p>
+
+<h3>Basic structure</h3>
+
+<ul>
+<li>Raindrop is a single page web app, <a href="http://hg.mozilla.org/labs/raindrop/file/0383bb083ba0/client/inflow/index.html">inflow/index.html</a>.</li>
+<li>It has a script tag to load Dojo.</li>
+<li>It uses module system to load one JS module, <a href="http://hg.mozilla.org/labs/raindrop/file/0383bb083ba0/client/inflow/inflow.js">inflow.js</a></li>
+<li>inflow loads all the modules it needs, most of the modules are widgets</li>
+<li>Each widget is like a mini MVC pattern, uses rd.api() to load model.</li>
+<li>Page state is communicated via fragment IDs that are translated to dojo.publish() calls. Allows decoupled state communication.</li>
+</ul>
+</body>
+</html>
